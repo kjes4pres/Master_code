@@ -10,17 +10,30 @@ import numpy as np
 def main():
     # Insert filepaths to runs for a given experiment
     # If you run the script, a new csv file will be generated and stored in /Results.
-    run1 = '/Users/kjesta/Desktop/Master prosjekt/Maxime_sine_greier/Maxime-s-Programs/20 cm/P0/f076/f076_A015_P0_run1.csv'
-    run2 = '/Users/kjesta/Desktop/Master prosjekt/Maxime_sine_greier/Maxime-s-Programs/20 cm/P0/f076/f076_A015_P0_run2.csv'
-    run3 = '/Users/kjesta/Desktop/Master prosjekt/Maxime_sine_greier/Maxime-s-Programs/20 cm/P0/f076/f076_A015_P0_run3.csv'
+    run1 = '/Users/kjesta/Desktop/Master prosjekt/Maxime_sine_greier/Maxime-s-Programs/20 cm no plates/P0/f076/f076_A015_P0_run1.csv'
+    run2 = '/Users/kjesta/Desktop/Master prosjekt/Maxime_sine_greier/Maxime-s-Programs/20 cm no plates/P0/f076/f076_A015_P0_run2.csv'
+    run3 = '/Users/kjesta/Desktop/Master prosjekt/Maxime_sine_greier/Maxime-s-Programs/20 cm no plates/P0/f076/f076_A015_P0_run3.csv'
+
+    # Insert parameters
+    water_depth = 'H02'
+    config = 'no_plates'
+    freq = 'f076'
+    amp = 'a0015'
+    pos = 'P0'
 
     # Insert wanted filename
-    output_filename = 'test.csv'
+    output_filename = f'{water_depth}_{config}_{freq}_{amp}_{pos}.csv'
+
+    headers = ['time', 'p1', 'p2', 'p3', 'p4', 'speed of sound']
 
     # Raw
-    df1 = pd.read_csv(run1)
-    df2 = pd.read_csv(run2)
-    df3 = pd.read_csv(run3)
+    df1 = pd.read_csv(run1, header=None)
+    df2 = pd.read_csv(run2, header=None)
+    df3 = pd.read_csv(run3, header=None)
+
+    df1.columns = headers
+    df2.columns = headers
+    df3.columns = headers
 
     # Cleaned
     df1_c = clean(df1)
