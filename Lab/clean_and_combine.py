@@ -56,6 +56,7 @@ def clean(df):
     Removes noise from data by subtracting the mean of the first 100 rows,
     and converts timestamps to datetime values.
     '''
+    df['time'] = df.iloc[:, 0]
     # Removing noise
     for col in range(1, 5):
         noise = df.iloc[:100, col].mean()
@@ -63,6 +64,8 @@ def clean(df):
 
     # Fixing the timestamps
     df['time'] = pd.to_datetime(df['time'])
+    df['time'] = df['time'] - df['time'].iloc[0] # Starting time is at zero
+    df['time'] = df['time'].dt.total_seconds()
 
     return df
 
@@ -103,10 +106,6 @@ def combine_runs(df1, df2, df3):
     '''
     Combines the three runs by taking the column-wise mean of the filtered data.
     '''
-    # Ensure all three DataFrames have the same structure and alignment
-    if not (df1.columns.equals(df2.columns) and df1.columns.equals(df3.columns)):
-        raise ValueError("DataFrames have mismatched columns.")
-
     # Take the mean of the three runs
     combined_df = df1.copy()
     combined_df.iloc[:, 1:] = (df1.iloc[:, 1:] + df2.iloc[:, 1:] + df3.iloc[:, 1:]) / 3
