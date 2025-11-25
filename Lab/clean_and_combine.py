@@ -1,55 +1,19 @@
 '''
-For a given experiment with three runs, I clean the data, apply low-pass filter and take the mean of the three runs. 
-The result is written to a new CSV file. Cleaning is done by subtracting gauge noise (column mean for the first 100 
-rows) from each column.
+For a given experiment with three runs, I pre-process the data.
+
+1) Clean each run by removing gauge noise and converting timestamps.
+    That is, for each pressure probe column, I subtract the mean of the first 100 rows (gauge noise).
+    Then, I convert the timestamps to seconds starting from zero.
+2) Apply low-pass filter to each cleaned run.
+    The low-pass filter is applied in the same way as done by Maxime:
+    - First, correct for large outliers by checking gaps up to size 4 and replacing values in between if the values on both sides are close enough.
+    - Then, apply a weighted moving average filter with weights [0.1, 0.2, 0.4, 0.2, 0.1] for 2 passes.
+3) Detrend each filtered run (set mean to zero).
 '''
 
 import pandas as pd
 import numpy as np
 
-def main():
-    # Insert filepaths to runs for a given experiment
-    # If you run the script, a new csv file will be generated and stored in /Results.
-    run1 = '/Users/kjesta/Desktop/Master prosjekt/Maxime_sine_greier/Maxime-s-Programs/20 cm no plates/P0/f076/f076_A015_P0_run1.csv'
-    run2 = '/Users/kjesta/Desktop/Master prosjekt/Maxime_sine_greier/Maxime-s-Programs/20 cm no plates/P0/f076/f076_A015_P0_run2.csv'
-    run3 = '/Users/kjesta/Desktop/Master prosjekt/Maxime_sine_greier/Maxime-s-Programs/20 cm no plates/P0/f076/f076_A015_P0_run3.csv'
-
-    # Insert parameters
-    water_depth = 'H02'
-    config = 'no_plates'
-    freq = 'f076'
-    amp = 'a0015'
-    pos = 'P0'
-
-    # Insert wanted filename
-    output_filename = f'{water_depth}_{config}_{freq}_{amp}_{pos}.csv'
-
-    headers = ['time', 'p1', 'p2', 'p3', 'p4', 'speed of sound']
-
-    # Raw
-    df1 = pd.read_csv(run1, header=None)
-    df2 = pd.read_csv(run2, header=None)
-    df3 = pd.read_csv(run3, header=None)
-
-    df1.columns = headers
-    df2.columns = headers
-    df3.columns = headers
-
-    # Cleaned
-    df1_c = clean(df1)
-    df2_c = clean(df2)
-    df3_c = clean(df3)
-
-    # Filtered 
-    df1_c_f = low_pass(df1_c)
-    df2_c_f = low_pass(df2_c)
-    df3_c_f = low_pass(df3_c)
-
-    # Taking the mean and combining the three runs
-    df_comb = combine_runs(df1_c_f, df2_c_f, df3_c_f)
-
-    # Writing it to a file
-    write_to_csv(df_comb, output_filename)
 
 def clean(df):
     '''
@@ -68,6 +32,15 @@ def clean(df):
     df['time'] = df['time'].dt.total_seconds()
 
     return df
+
+def detrend(df):
+    '''
+    Detrends the data by removing linear trend from each column.
+    '''
+    df_detrended = df.copy()
+    for col in df_detrended.columns[1:5]:
+        df_detrended[col] = df_detrended[col] - np.mean(df_detrended[col])
+    return df_detrended
 
 # Applying low pass filter in the same style as Maxime
 weights = np.array([0.1, 0.2, 0.4, 0.2, 0.1])
@@ -112,21 +85,3 @@ def combine_runs(df1, df2, df3):
 
     # Return the combined DataFrame
     return combined_df
-
-def write_to_csv(df, output_filename):
-    '''
-    Writes the combined DataFrame of all three runs to a CSV file to "/Results".
-    '''
-    # Define the output directory
-    output_dir = '/Users/kjesta/Desktop/Master prosjekt/Master_code/Lab/Results/Test/'
-
-    # Full path to the output file
-    output_path = output_dir + output_filename
-
-    # Write to CSV
-    df.to_csv(output_path, index=False)
-    print(f"File successfully written to: {output_path}")
-
-
-if __name__ == "__main__":
-    main()
