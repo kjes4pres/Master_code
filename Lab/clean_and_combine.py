@@ -74,14 +74,3 @@ def low_pass(df, tol=1e-6, max_gap=4, passes=2):
         df_smooth[col] = values
     
     return df_smooth
-
-def combine_runs(df1, df2, df3):
-    '''
-    Combines the three runs by taking the column-wise mean of the filtered data.
-    '''
-    # Take the mean of the three runs
-    combined_df = df1.copy()
-    combined_df.iloc[:, 1:] = (df1.iloc[:, 1:] + df2.iloc[:, 1:] + df3.iloc[:, 1:]) / 3
-
-    # Return the combined DataFrame
-    return combined_df
