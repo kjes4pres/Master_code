@@ -68,12 +68,12 @@ def estimate_wavenumber(f_obs, depth):
     k_guess = omega**2 / g
 
     # Iteratively solve for k using the dispersion relation
-    for _ in range(10):
+    for _ in range(100):
         k_guess = (omega**2) / (g * np.tanh(k_guess * depth))
 
     return k_guess
 
-def max_waves_b4_reflection(tank_length, depth, frequency, wavelength, probe_positions, wave_maker_build_up_time):
+def max_waves_b4_reflection(tank_length, depth, frequency, wavenumber, probe_positions, wave_maker_build_up_time):
     """
     Calculate the maximum number of waves before reflections affect measurements at each probe.
 
@@ -88,12 +88,13 @@ def max_waves_b4_reflection(tank_length, depth, frequency, wavelength, probe_pos
     list: Maximum number of waves before reflections at each probe.
     """
     # Calculate wave properties
-    wave_num = 2 * np.pi / wavelength  # Wave number k
-    omega = np.sqrt(dispersion_relation(wave_num, depth))  # Angular frequency
-    phase_speed = omega / wave_num  # Phase speed 
+    omega = np.sqrt(dispersion_relation(wavenumber, depth))  # Angular frequency
+    phase_speed = omega / wavenumber  # Phase speed 
     wave_period = 1 / frequency  # Wave period
 
     max_waves_list = []
+
+    effective_time = []
 
     for probe_pos in probe_positions:
         # Distance from probe to far end of the tank
@@ -103,10 +104,10 @@ def max_waves_b4_reflection(tank_length, depth, frequency, wavelength, probe_pos
         round_trip_time = 2 * distance_to_far_end / phase_speed
 
         # Effective time available for generating waves
-        effective_time = round_trip_time - wave_maker_build_up_time
+        effective_time.append(round_trip_time - wave_maker_build_up_time)
 
         # Handle cases where reflections return before the wave train stabilizes
-        if effective_time < 0:
+        if effective_time[-1] < 0:
             max_waves = 0  # No valid waves before reflections
         else:
             # Maximum number of waves before reflections return
@@ -114,4 +115,4 @@ def max_waves_b4_reflection(tank_length, depth, frequency, wavelength, probe_pos
 
         max_waves_list.append(max_waves)
 
-    return max_waves_list
+    return max_waves_list, effective_time
