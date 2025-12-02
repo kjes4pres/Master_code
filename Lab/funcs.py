@@ -8,6 +8,12 @@ def dispersion_relation(k, H):
     g = 9.81
     return  g*k*np.tanh(k*H)
 
+def dispersion_relation_derivative_k(k, H):
+    g = 9.81
+    tanh_kH = np.tanh(k*H)
+    sech_kH = 1 / np.cosh(k*H)
+    return g*tanh_kH + g*k*H*sech_kH**2
+
 def solve_disp_for_H(freq, lamb):
     g = 9.81
     k = (2*np.pi)/lamb
@@ -17,102 +23,199 @@ def solve_disp_for_H(freq, lamb):
 
     return H_eff
 
-def phase_speed(wavelength, frequency):
-    wave_number = 2 * np.pi / wavelength
-    angular_frequency = 2 * np.pi * frequency
-    c = angular_frequency / wave_number
-    return c
-
-def frequency_analysis(r_cut):
-    
-    signals = [[],[],[],[]]  # for storing probe signals
-
-    for i in range(1, 5):
-        signals[i-1] = r_cut.iloc[:, i].values
-    
-    signals = np.array(signals)
-
-    sample_rate = 250  # Samples per second
-    n = len(r_cut)  # Number of samples
-    dt = 1 / sample_rate  # Time between samples
-
-    fft_signals = fft(signals, axis=1)
-    freqs = fftfreq(n, d=dt)
-
-    # Keep only positive frequencies
-    pos_freqs = freqs[:n//2]
-    fft_pos = fft_signals[:, :n//2]
-
-    # Find the dominant frequency, here done at the first probe
-    power = np.abs(fft_pos[0])**2
-    dominant_idx = np.argmax(power[1:]) + 1 # skip the zero frequency
-    f_dom = pos_freqs[dominant_idx]
-
-    return f_dom
-
-
-def estimate_wavenumber(f_obs, depth):
+def cut_transient_fronts(df, cut_times):
     """
-    Estimate the wavenumber k using the dispersion relation for linear waves.
+    Cut off transient fronts at each probe based on cut_times.
+    Assumes that the dataframe has a 'time' column.
+    """
+    r_cut = df.copy()
+
+    for i, col in enumerate(df.columns[1:5]):
+        cut_time = cut_times[i]
+        r_cut[col] = df.loc[df['time'] >= cut_time, col]
+
+    return r_cut
+
+
+def estimate_wavenumber(freq, depth, g=9.81, tol=1e-10, max_iter=100):
+    """
+    Estimate the wavenumber k using the dispersion relation for linear waves,
+    using the Newton-Raphson iterative method.
     
     Parameters:
-    f_obs : float
+    freq : float
         Observed frequency in Hz.
     depth : float
         Water depth in meters.
     """
-    g = 9.81  # Acceleration due to gravity in m/s^2
-    omega = 2 * np.pi * f_obs  # Angular frequency
+    omega = 2 * np.pi * freq  # Angular frequency
 
     # Initial guess for k using deep water approximation
     k_guess = omega**2 / g
+    # Modifying initial guess for finite depth
+    k_guess = omega**2 / (g * np.tanh(k_guess * depth))
 
-    # Iteratively solve for k using the dispersion relation
-    for _ in range(100):
-        k_guess = (omega**2) / (g * np.tanh(k_guess * depth))
+    for i in range(max_iter):
+        f = dispersion_relation(k_guess, depth) - omega**2
+        df_dk = dispersion_relation_derivative_k(k_guess, depth)
+        k_new = k_guess - (f / df_dk)
 
-    return k_guess
+        if abs(k_new - k_guess) < tol:
+            return k_new
+        
+        k_guess = k_new
+    raise ValueError("Wavenumber estimation did not converge")
+    
 
-def max_waves_b4_reflection(tank_length, depth, frequency, wavenumber, probe_positions, wave_maker_build_up_time):
+
+def max_waves_b4_reflection(tank_length,
+                            depth,
+                            frequency,
+                            wavenumber,
+                            probe_positions,
+                            cut_times):
     """
-    Calculate the maximum number of waves before reflections affect measurements at each probe.
+    Compute maximum number of waves (and effective times) before the first reflected waves reach each probe.
 
-    Parameters:
-    tank_length (float): Length of the wave tank (meters).
-    depth (float): Depth of the water in the tank (meters).
-    frequency (float): Frequency of the wave (Hz).
-    wavelength (float): Wavelength of the wave (meters).
-    probe_positions (list or array): List of x-positions of the probes along the tank (meters).
+    Parameters
+    ----------
+    tank_length : float
+        Length of the tank (m), wavemaker at x=0, far wall at x=tank_length.
+    depth : float
+        Water depth H (m).
+    frequency : float
+        Dominant wave frequency f (Hz).
+    wavenumber : float
+        Dominant wavenumber k (1/m).
+    probe_positions : array_like
+        Probe x-positions (m)
+    cut_times : array_like
+        Time at which the beginning of the signal is cut for each probe (s). To avoid transient fronts.
 
-    Returns:
-    list: Maximum number of waves before reflections at each probe.
+    Returns
+    -------
+    max_waves_list : ndarray
+        Maximum number of full wave periods usable before reflection contaminates each probe.
+    effective_time : ndarray
+        Usable time window (s) before reflection: max(0, (2L - x_p)/c_g - cut_time)
     """
-    # Calculate wave properties
-    omega = np.sqrt(dispersion_relation(wavenumber, depth))  # Angular frequency
-    phase_speed = omega / wavenumber  # Phase speed 
-    wave_period = 1 / frequency  # Wave period
+    # Wave properties
+    omega = 2.0 * np.pi * frequency
+    wave_period = 1.0 / frequency
+    c = omega / wavenumber  # Phase speed
 
-    max_waves_list = []
+    # Group speed for linear waves
+    cg = (c / 2) * (1 + (2 * wavenumber * depth) / (np.sinh(2 * wavenumber * depth)))
+ 
+    # Reflection arrival time at probe: (2L - x_p)/cg
+    reflection_time = (2.0 * tank_length - probe_positions) / cg
 
-    effective_time = []
+    # Effective usable time before reflection
+    usable_time = reflection_time - cut_times
 
-    for probe_pos in probe_positions:
-        # Distance from probe to far end of the tank
-        distance_to_far_end = tank_length - probe_pos
+    # Avoid negative usable times
+    usable_time = np.maximum(usable_time, 0.0)
 
-        # Round-trip time for reflections to return to the probe
-        round_trip_time = 2 * distance_to_far_end / phase_speed
+    # Max number of waves
+    max_waves = usable_time / wave_period
 
-        # Effective time available for generating waves
-        effective_time.append(round_trip_time - wave_maker_build_up_time)
+    return max_waves, usable_time
 
-        # Handle cases where reflections return before the wave train stabilizes
-        if effective_time[-1] < 0:
-            max_waves = 0  # No valid waves before reflections
-        else:
-            # Maximum number of waves before reflections return
-            max_waves = effective_time / wave_period
+def cut_off_reflections(data, frequency, usable_time):
+    """
+    Cut off data after effective times to avoid reflection contamination.
+    Cutting to keep only full wave periods.
+    
+    Parameters
+    ----------
+    data : pd.DataFrame
+        DataFrame containing time series data from probes.
 
-        max_waves_list.append(max_waves)
+    frequency : float
+        Frequency of the waves in Hz.
 
-    return max_waves_list, effective_time
+    effective_times : ndarray
+        Array of effective times for each probe.
+
+    Returns
+    -------
+    cut_data : pd.DataFrame
+        DataFrame with data after effective times set to NaN.
+    """
+    cut_data = data.copy()
+    wave_period = 1 / frequency
+
+    for i, use_time in enumerate(usable_time):
+        max_full_periods = int(use_time // wave_period)
+        cut_off_time = max_full_periods * wave_period
+        # Time after transient front and before reflections
+        valid_time = use_time + cut_off_time
+        probe_col = f'P_{i}'
+        cut_data.loc[cut_data['time'] > valid_time, probe_col] = np.nan
+
+    return cut_data
+
+def cut_out_valid_data(data, frequency, depth, wave_maker_build_up_time, x_probe_pos):
+    """
+    Cut off invalid data from the DataFrame based on transient front arrival times and reflection arrival times.
+    Also trims to ensure integer number of wave periods using zero-crossings.
+    """
+    print('----- Cutting out invalid data -----')
+
+    # Step 1: Transient front arrival times at each probe
+    transient_front_velocity = x_probe_pos[0] / wave_maker_build_up_time  # m/s
+    build_up_time = x_probe_pos / transient_front_velocity
+    print(f'Time after transient front reaches each probe: {build_up_time}')
+    print()
+
+    # Step 2: Reflection arrival times
+    omega = 2 * np.pi * frequency
+    k = estimate_wavenumber(frequency, depth)
+    c = omega / k
+    cg = 0.5 * c * (1 + (2 * k * depth) / np.sinh(2 * k * depth))
+
+    tank_length = 25.0
+    reflection_distances = 2 * (tank_length - x_probe_pos)
+    reflection_times = reflection_distances / cg
+
+    print(f'Reflection arrival times at each probe: {reflection_times}')
+    print()
+    print(f'Time window between build-up and reflection at each probe: {reflection_times - build_up_time}')
+    print()
+    print(f'Maximum number of usable wave periods at each probe: {(reflection_times - build_up_time) * frequency}')
+    print('-------------------------------------------------')
+
+    # Step 3: Keep only valid window (between build-up and reflection)
+    valid = data.copy()
+    probe_cols = valid.columns[1:5]
+
+    for i, col in enumerate(probe_cols):
+        mask = (valid["time"] < build_up_time[i]) | (valid["time"] > reflection_times[i])
+        valid.loc[mask, col] = np.nan
+
+    # Step 4: Zero-crossing trimming (ensure integer number of wave periods)
+
+    for col in probe_cols:
+        series = valid[col]
+
+        # Keep only valid, not nans
+        y = series.dropna()
+
+        # Upward zero crossings: y[t-1] < 0 AND y[t] >= 0
+        y_shift = y.shift(1)
+        upward_crossings = y.index[(y_shift < 0) & (y >= 0)]
+
+        # Need at least 2 crossings for at least one full period
+        if len(upward_crossings) < 2:
+            continue
+
+        start_idx = upward_crossings[0]
+        end_idx = upward_crossings[-1]
+
+        # Cut everything before start and after end
+        series.loc[:start_idx] = np.nan
+        series.loc[end_idx+1:] = np.nan
+
+        valid[col] = series
+
+    return valid
