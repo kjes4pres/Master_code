@@ -1,4 +1,4 @@
-Summary of wave parameters for 20cm_f12_a03:
+Summary of wave parameters for 20cm_f12_a02:
 ----------------------------------------------------------
 Water depth: 0.2 m, Frequency: 1.2 Hz, Amplitude setting: 0.2 V
 
@@ -41,3 +41,9 @@ P_0: 9166 data points
 P_1: 6877 data points
 P_2: 5209 data points
 P_3: 3335 data points
+
+Standard Error of the Mean for each probe:
+P0: 0.058 mm
+P1: 0.057 mm
+P2: 0.056 mm
+P3: 0.056 mm

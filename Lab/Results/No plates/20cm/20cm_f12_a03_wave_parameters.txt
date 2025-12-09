@@ -41,3 +41,9 @@ P_0: 9169 data points
 P_1: 6879 data points
 P_2: 5208 data points
 P_3: 3543 data points
+
+Standard Error of the Mean for each probe:
+P0: 0.087 mm
+P1: 0.086 mm
+P2: 0.085 mm
+P3: 0.084 mm

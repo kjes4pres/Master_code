@@ -1,0 +1,49 @@
+Summary of wave parameters for 20cm_f18_a025:
+----------------------------------------------------------
+Water depth: 0.2 m, Frequency: 1.8 Hz, Amplitude setting: 0.25 V
+
+Wavelength: 0.4770 m
+Wavenumber: 13.1736 1/m
+Phase speed: 0.8585 m/s
+Group speed: 0.4525 m/s
+
+Dimensionless parameters:
+ak = 0.3263, kH = 2.6347
+
+Standard Deviation for each probe:
+P0: 0.0175 m
+P1: 0.0138 m
+P2: 0.0122 m
+P3: 0.0124 m
+
+Wave Amplitude for each probe:
+P0: 0.0248 m
+P1: 0.0196 m
+P2: 0.0173 m
+P3: 0.0175 m
+
+Amplitude Difference between P0 and P3: 0.00722 m, R^2 = 0.860
+Spatial Amplitude Decay Rate: 0.00169 m/m
+
+Number of data points used for analysis after cutting out build-up time and reflections:
+Run 1:
+P_0: 10824 data points
+P_1: 9325 data points
+P_2: 8353 data points
+P_3: 7364 data points
+Run 2:
+P_0: 10797 data points
+P_1: 9190 data points
+P_2: 8348 data points
+P_3: 7379 data points
+Run 3:
+P_0: 10796 data points
+P_1: 9106 data points
+P_2: 8464 data points
+P_3: 7366 data points
+
+Standard Error of the Mean for each probe:
+P0: 0.143 mm
+P1: 0.113 mm
+P2: 0.100 mm
+P3: 0.101 mm
