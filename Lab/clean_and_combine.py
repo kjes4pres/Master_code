@@ -2,13 +2,13 @@
 For a given experiment with three runs, I pre-process the data.
 
 1) Clean each run by removing gauge noise and converting timestamps.
-    That is, for each pressure probe column, I subtract the mean of the first 100 rows (gauge noise).
+    That is, for each pressure probe column, I subtract the mean of the first 500 rows (gauge noise).
     Then, I convert the timestamps to seconds starting from zero.
-2) Apply low-pass filter to each cleaned run.
-    The low-pass filter is applied in the same way as done by Maxime:
-    - First, correct for large outliers by checking gaps up to size 4 and replacing values in between if the values on both sides are close enough.
-    - Then, apply a weighted moving average filter with weights [0.1, 0.2, 0.4, 0.2, 0.1] for 2 passes.
-3) Detrend each filtered run (set mean to zero).
+2) Detrend each filtered run (set mean to zero).
+
+If needed:
+3) Correct for large outliers in the data.
+
 '''
 
 import pandas as pd
@@ -17,13 +17,13 @@ import numpy as np
 
 def clean(df):
     '''
-    Removes noise from data by subtracting the mean of the first 250 rows,
+    Removes noise from data by subtracting the mean of the first 500 rows,
     and converts timestamps to datetime values.
     '''
     df['time'] = df.iloc[:, 0]
     # Removing noise
     for col in range(1, 5):
-        noise = df.iloc[:250, col].mean()
+        noise = df.iloc[:500, col].mean()
         df.iloc[:, col] = df.iloc[:, col] - noise
 
     # Fixing the timestamps
@@ -42,34 +42,26 @@ def detrend(df):
         df_detrended[col] = df_detrended[col] - np.mean(df_detrended[col])
     return df_detrended
 
-# Applying low pass filter in the same style as Maxime
 
-
-def low_pass(df, tol=1e-6, max_gap=4, passes=2):
-    ''' 
-    Corrects for large outliers and smoothes the data.
+def outlier_correction(df, tol=1e-6, max_gap=10):
+    '''
+    Corrects for large outliers in the data.
     Parameters:
     df : pandas DataFrame
-        DataFrame containing the data to be smoothed.
+        DataFrame containing the data to be corrected.
     tol : float
         Tolerance for detecting outliers.
     max_gap : int
         Maximum gap size to consider for outlier correction.
-    passes : int
-        Number of smoothing passes to apply.
     Returns:
     pandas DataFrame
-        Smoothed DataFrame.
-    '''
-    weights = np.array([0.1, 0.2, 0.4, 0.2, 0.1])
-
-    # Copy the input DataFrame to avoid modifying the original data
-    df_smooth = df.copy()
-    
+        Corrected DataFrame.
+    ''' 
+    df_corrected = df.copy()
     # Process each probe column
-    for col in df_smooth.columns[1:5]:
+    for col in df_corrected.columns[1:5]:
         # Extract values as a float numpy array
-        values = df_smooth[col].values.astype(float).copy()
+        values = df_corrected[col].values.astype(float).copy()
 
         n = len(values)
         # Correct for large outliers by checking gaps up to size max_gap
@@ -84,15 +76,26 @@ def low_pass(df, tol=1e-6, max_gap=4, passes=2):
                     if all(abs(m - left) > tol for m in middle):
                         values[i:i + gap] = left
 
-        # Apply weighted moving average smoothing for the specified number of passes
-        for _ in range(passes):
-            smoothed = values.copy()
-            for i in range(2, len(values) - 2):
-                # Create a window of 5 values centered at i
-                window = values[i-2:i+3]
-                smoothed[i] = np.dot(weights, window)
-            values = smoothed
+        df_corrected[col] = values
 
-        df_smooth[col] = values
-    
-    return df_smooth
+    return df_corrected
+
+def correct_outliers(df):
+    df_corrected = df.copy()
+    for col in df_corrected.columns[1:5]:
+        values = df_corrected[col].values
+        mean = np.mean(values)
+        std = np.std(values)
+        # Identify outliers
+        outliers = np.abs(values - mean) / std > 3 
+        # Replace outliers with neighboring mean
+        for i in range(len(values)):
+            if outliers[i]:
+                if i == 0:
+                    values[i] = values[i + 1]
+                elif i == len(values) - 1:
+                    values[i] = values[i - 1]
+                else:
+                    values[i] = (values[i - 1] + values[i + 1]) / 2
+        df_corrected[col] = values
+    return df_corrected
