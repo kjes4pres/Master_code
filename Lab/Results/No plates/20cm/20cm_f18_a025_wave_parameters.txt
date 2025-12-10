@@ -8,42 +8,42 @@ Phase speed: 0.8585 m/s
 Group speed: 0.4525 m/s
 
 Dimensionless parameters:
-ak = 0.3263, kH = 2.6347
+ak = 0.2546, kH = 2.6347
 
 Standard Deviation for each probe:
-P0: 0.0175 m
-P1: 0.0138 m
-P2: 0.0122 m
-P3: 0.0124 m
+P0: 0.0137 m
+P1: 0.0120 m
+P2: 0.0119 m
+P3: 0.0113 m
 
 Wave Amplitude for each probe:
-P0: 0.0248 m
-P1: 0.0196 m
-P2: 0.0173 m
-P3: 0.0175 m
+P0: 0.0193 m
+P1: 0.0170 m
+P2: 0.0168 m
+P3: 0.0159 m
 
-Amplitude Difference between P0 and P3: 0.00722 m, R^2 = 0.860
-Spatial Amplitude Decay Rate: 0.00169 m/m
+Amplitude Difference between P0 and P3: 0.00338 m, R^2 = 0.916
+Spatial Amplitude Decay Rate: 0.00079 m/m
 
 Number of data points used for analysis after cutting out build-up time and reflections:
 Run 1:
-P_0: 10824 data points
-P_1: 9325 data points
-P_2: 8353 data points
-P_3: 7364 data points
+P_0: 10835 data points
+P_1: 9443 data points
+P_2: 8355 data points
+P_3: 7367 data points
 Run 2:
-P_0: 10797 data points
-P_1: 9190 data points
+P_0: 10832 data points
+P_1: 9431 data points
 P_2: 8348 data points
-P_3: 7379 data points
+P_3: 7355 data points
 Run 3:
-P_0: 10796 data points
-P_1: 9106 data points
-P_2: 8464 data points
-P_3: 7366 data points
+P_0: 10836 data points
+P_1: 9429 data points
+P_2: 8346 data points
+P_3: 7357 data points
 
 Standard Error of the Mean for each probe:
-P0: 0.143 mm
-P1: 0.113 mm
-P2: 0.100 mm
-P3: 0.101 mm
+P0: 0.112 mm
+P1: 0.098 mm
+P2: 0.097 mm
+P3: 0.092 mm
