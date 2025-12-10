@@ -54,52 +54,56 @@ def interpolate_missing(df):
     return df_interpolated
 
 
-def correct_spikes(df, threshold):
+def correct_spikes(df, threshold, max_passes=20):
     """
-    Original code by Karen Samseth, written in MATLAB.
-    Modified for Python by Kjersti Stangeland.
+    Correct spikes in each probe column (columns 1..4).
+    - threshold: slope threshold for spike detection (same units as data/time).
+    - max_passes: maximum iterations to run; stops early if no new spikes found.
     """
-
     df_corrected = df.copy()
 
     for col in df_corrected.columns[1:5]:
-        probe_data = df_corrected[col].values
-        n = len(probe_data)
-        t = np.arange(1, n+1)
-        corrected_probe_data = probe_data.copy()
+        probe = df_corrected[col].values.astype(float)
+        n = probe.size
+        t = np.arange(1, n + 1, dtype=float)
 
-        np_total = 0
-        counter = 0
+        corrected = probe.copy()
 
-        while counter < 20:
-            counter += 1
-            npr = 0
+        total_removed = 0
+        for pass_num in range(1, max_passes + 1):
+            removed_this_pass = 0
 
-            for i in range(2, n-3):
+            for i in range(2, n - 2):
+                # If any of the neighbors are already nan, skip this index
+                if np.isnan(corrected[i - 1]) or np.isnan(corrected[i]) or np.isnan(corrected[i + 1]):
+                    continue
 
-                # NEW: Outlier detection without sign condition
-                slope = abs((corrected_probe_data[i+1] - corrected_probe_data[i]) /
-                            (t[i+1] - t[i]))
+                slope = (corrected[i + 1] - corrected[i - 1]) / (t[i + 1] - t[i - 1])
 
-                if slope > threshold:
-                    for j in [i-2, i-1, i, i+1, i+2]:
+                if abs(slope) > threshold:
+                    for j in (i - 2, i - 1, i, i + 1, i + 2):
                         if 0 <= j < n:
-                            corrected_probe_data[j] = np.nan
-                    npr += 1
+                            if not np.isnan(corrected[j]):
+                                corrected[j] = np.nan
+                                removed_this_pass += 1
 
-            np_total += npr
+            if removed_this_pass == 0:
+                # nothing found -> stop early
+                break
 
-            # Interpolate over NaNs using PCHIP
-            # Mask = True if value is not NaN
-            mask = np.invert(np.isnan(corrected_probe_data))
-            
-            #if mask.sum() < 2:
-               # break
+            total_removed += removed_this_pass
 
-            interpolator = PchipInterpolator(t[mask], corrected_probe_data[mask])
-            corrected_probe_data = interpolator(t)
+            # Interpolate over NaNs when enough valid points exist
+            # Mask = True if not NaN
+            mask = np.invert(np.isnan(corrected))
+            if mask.sum() >= 2:
+                interp = PchipInterpolator(t[mask], corrected[mask])
+                corrected = interp(t)
+            else:
+                # Not enough points to interpolate: keep what we have and break
+                break
 
-        print(f'Column {col}: Removed {np_total} spikes in {counter} passes.')
-        df_corrected[col] = corrected_probe_data
+        print(f'Column {col}: Removed {total_removed} spikes in {pass_num} passes.')
+        df_corrected[col] = corrected
 
     return df_corrected
