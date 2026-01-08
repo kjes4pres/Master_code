@@ -45,20 +45,14 @@ def detrend(df):
         df_detrended[col] = df_detrended[col] - np.mean(df_detrended[col])
     return df_detrended
 
-def interpolate_missing(df):
-    '''
-    Interpolates missing values in the DataFrame.
-    '''
-    df_interpolated = df.copy()
-    df_interpolated.interpolate(method='linear', inplace=True)
-    return df_interpolated
-
-
 def correct_spikes(df, threshold, max_passes=20):
     """
-    Correct spikes in each probe column (columns 1..4).
+    Correct spikes in each probe column.
     - threshold: slope threshold for spike detection (same units as data/time).
     - max_passes: maximum iterations to run; stops early if no new spikes found.
+
+    Original code by Anne Raustoel (2012), modified by Karen Samseth (2022), 
+    and converted from matlab to Python here.
     """
     df_corrected = df.copy()
 
