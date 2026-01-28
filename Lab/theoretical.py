@@ -66,7 +66,7 @@ def theoretical_omega(k, H, D, a, h):
     return omega
 
 
-def spatial_damping_coefficient(k, h, D, H):
+def spatial_damping_coefficient(k, D, H, h = 0.01):
     """
     Calculate the theoretical spatial damping coefficient.
     Corresponds to the modified version of Equation 59 in Weber (2025).
