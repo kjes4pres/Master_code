@@ -1,4 +1,4 @@
-Summary of wave parameters for 20cm_f16_a01:
+Summary of wave parameters for 20cm_f16_a01_p005:
 ----------------------------------------------------------
 Water depth: 0.2 m, Frequency: 1.6 Hz, Amplitude setting: 0.1 V
 
@@ -8,42 +8,42 @@ Phase speed: 0.9481 m/s
 Group speed: 0.5319 m/s
 
 Dimensionless parameters:
-ak = 0.0721, kH = 2.1206
+ak = 0.0727, kH = 2.1206
 
 Standard Deviation for each probe:
 P0: 0.0048 m
-P1: 0.0048 m
-P2: 0.0046 m
-P3: 0.0046 m
+P1: 0.0047 m
+P2: 0.0045 m
+P3: 0.0044 m
 
 Wave Amplitude for each probe:
-P0: 0.0068 m
-P1: 0.0067 m
-P2: 0.0065 m
-P3: 0.0065 m
+P0: 0.0069 m
+P1: 0.0066 m
+P2: 0.0063 m
+P3: 0.0062 m
 
-Amplitude Difference between P0 and P3: 0.00029 m, R^2 = 0.827
-Spatial Amplitude Decay Rate: 0.00007 m/m
+Amplitude Difference between P0 and P3: 0.00063 m, R^2 = 0.987
+Spatial Amplitude Decay Rate: 0.00015 m/m
 
 Number of data points used for analysis after cutting out build-up time and reflections:
 Run 1:
-P_0: 11407 data points
+P_0: 11408 data points
+P_1: 10000 data points
+P_2: 9220 data points
+P_3: 8124 data points
+Run 2:
+P_0: 11408 data points
 P_1: 10000 data points
 P_2: 9219 data points
 P_3: 8122 data points
-Run 2:
-P_0: 11408 data points
-P_1: 9998 data points
-P_2: 9221 data points
-P_3: 8123 data points
 Run 3:
-P_0: 11408 data points
-P_1: 9998 data points
-P_2: 9219 data points
+P_0: 11407 data points
+P_1: 9999 data points
+P_2: 9220 data points
 P_3: 8123 data points
 
 Standard Error of the Mean for each probe:
-P0: 0.039 mm
-P1: 0.039 mm
+P0: 0.040 mm
+P1: 0.038 mm
 P2: 0.037 mm
-P3: 0.038 mm
+P3: 0.036 mm
