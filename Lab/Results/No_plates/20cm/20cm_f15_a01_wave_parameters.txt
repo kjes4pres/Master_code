@@ -22,7 +22,7 @@ P1: 0.0062 m
 P2: 0.0062 m
 P3: 0.0061 m
 
-Amplitude Difference between P0 and P3: 0.00034 m, R^2 = 0.888
+Amplitude Difference between P0 and P3: 0.00034 m, R^2 = 0.889
 Spatial Amplitude Decay Rate: 0.00008 m/m
 
 Number of data points used for analysis after cutting out build-up time and reflections:
