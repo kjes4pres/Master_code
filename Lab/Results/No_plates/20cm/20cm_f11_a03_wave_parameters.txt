@@ -30,17 +30,17 @@ Run 1:
 P_0: 8635 data points
 P_1: 6365 data points
 P_2: 5007 data points
-P_3: 3638 data points
+P_3: 3411 data points
 Run 2:
 P_0: 8635 data points
 P_1: 6364 data points
 P_2: 5007 data points
-P_3: 3639 data points
+P_3: 3411 data points
 Run 3:
 P_0: 8634 data points
 P_1: 6364 data points
 P_2: 5006 data points
-P_3: 3640 data points
+P_3: 3413 data points
 
 Standard Error of the Mean for each probe:
 P0: 0.080 mm

@@ -29,17 +29,17 @@ Number of data points used for analysis after cutting out build-up time and refl
 Run 1:
 P_0: 10189 data points
 P_1: 7307 data points
-P_2: 5576 data points
+P_2: 5383 data points
 P_3: 3654 data points
 Run 2:
 P_0: 10188 data points
 P_1: 7307 data points
-P_2: 5576 data points
+P_2: 5384 data points
 P_3: 3654 data points
 Run 3:
 P_0: 10189 data points
 P_1: 7307 data points
-P_2: 5577 data points
+P_2: 5385 data points
 P_3: 3655 data points
 
 Standard Error of the Mean for each probe:
