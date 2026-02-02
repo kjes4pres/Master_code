@@ -100,4 +100,4 @@ def correct_spikes(df, threshold, max_passes=20):
         print(f'Column {col}: Removed {total_removed} spikes in {pass_num} passes.')
         df_corrected[col] = corrected
 
-    return df_corrected
+    return df_corrected 
