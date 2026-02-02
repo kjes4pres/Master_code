@@ -1,0 +1,49 @@
+Summary of wave parameters for 30cm_f1306_a0302:
+----------------------------------------------------------
+Water depth: 0.3 m, Frequency: 1.306 Hz, Amplitude setting: 0.302 V
+
+Wavelength: 0.8894 m
+Wavenumber: 7.0649 1/m
+Phase speed: 1.1615 m/s
+Group speed: 0.6518 m/s
+
+Dimensionless parameters:
+ak = 0.1418, kH = 2.1195
+
+Standard Deviation for each probe:
+P0: 0.0142 m
+P1: 0.0141 m
+P2: 0.0138 m
+P3: 0.0137 m
+
+Wave Amplitude for each probe:
+P0: 0.0201 m
+P1: 0.0200 m
+P2: 0.0196 m
+P3: 0.0194 m
+
+Amplitude Difference between P0 and P3: 0.00064 m, R^2 = 0.872
+Spatial Amplitude Decay Rate: 0.00015 m/m
+
+Number of data points used for analysis after cutting out build-up time and reflections:
+Run 1:
+P_0: 11300 data points
+P_1: 8998 data points
+P_2: 7273 data points
+P_3: 5551 data points
+Run 2:
+P_0: 11299 data points
+P_1: 8998 data points
+P_2: 7273 data points
+P_3: 5552 data points
+Run 3:
+P_0: 11298 data points
+P_1: 8997 data points
+P_2: 7274 data points
+P_3: 5551 data points
+
+Standard Error of the Mean for each probe:
+P0: 0.116 mm
+P1: 0.116 mm
+P2: 0.113 mm
+P3: 0.112 mm
