@@ -22,7 +22,7 @@ P1: 0.0054 m
 P2: 0.0052 m
 P3: 0.0050 m
 
-Amplitude Difference between P0 and P3: 0.00050 m, R^2 = 0.927
+Amplitude Difference between P0 and P3: 0.00050 m
 Spatial Amplitude Decay Rate: 0.00012 m/m
 
 Number of data points used for analysis after cutting out build-up time and reflections:
@@ -30,20 +30,14 @@ Run 1:
 P_0: 10576 data points
 P_1: 8079 data points
 P_2: 6345 data points
-P_3: 4424 data points
+P_3: 4423 data points
 Run 2:
 P_0: 10578 data points
 P_1: 8079 data points
-P_2: 6345 data points
+P_2: 6346 data points
 P_3: 4423 data points
 Run 3:
 P_0: 10578 data points
 P_1: 8079 data points
-P_2: 6345 data points
+P_2: 6346 data points
 P_3: 4423 data points
-
-Standard Error of the Mean for each probe:
-P0: 0.032 mm
-P1: 0.031 mm
-P2: 0.030 mm
-P3: 0.029 mm
