@@ -7,7 +7,15 @@ def get_amp_n_err_lists(df):
     """
     std_list = np.array([df['P_0'].std(), df['P_1'].std(), df['P_2'].std(), df['P_3'].std()])
     amp_list = std_list * np.sqrt(2)
-    err_list = std_list / np.sqrt(len(df))
+
+    # Number of data points per probe
+    n_0 = df["P_0"].count()
+    n_1 = df["P_1"].count()
+    n_2 = df["P_2"].count()
+    n_3 = df["P_3"].count()
+    len_list = np.array([n_0, n_1, n_2, n_3])
+    
+    err_list = std_list / np.sqrt(len_list)
 
     return amp_list, err_list
 
