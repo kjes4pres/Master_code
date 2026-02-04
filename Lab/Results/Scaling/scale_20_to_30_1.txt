@@ -1,0 +1,315 @@
+Scaling from 20cm to 30cm - f11_a01
+
+Wave parameters at 20cm:
+Frequency (Hz): 1.1
+Angular frequency (rad/s): 6.911503837897546
+Amplitude at P0 (m): 0.0046
+Wave number (1/m): 5.8895
+Wavelength (m): 1.0668
+ak value at 20cm: 0.0270917
+kH value at 20cm: 1.1779
+
+Scaled wave parameters at 30cm:
+Frequency (Hz): 0.8981462390204987
+Angular frequency (rad/s): 5.6432192527122025
+Amplitude at P0 (m): 0.006899999999999999
+Wave number (1/m): 3.9263333333333335
+Wavelength (m): 1.6002679277985192
+ak value at 30cm: 0.027091699999999996
+kH value at 30cm: 1.1779
+--------------------------------
+
+Scaling from 20cm to 30cm - f11_a02
+
+Wave parameters at 20cm:
+Frequency (Hz): 1.1
+Angular frequency (rad/s): 6.911503837897546
+Amplitude at P0 (m): 0.0092
+Wave number (1/m): 5.8895
+Wavelength (m): 1.0668
+ak value at 20cm: 0.0541834
+kH value at 20cm: 1.1779
+
+Scaled wave parameters at 30cm:
+Frequency (Hz): 0.8981462390204987
+Angular frequency (rad/s): 5.6432192527122025
+Amplitude at P0 (m): 0.013799999999999998
+Wave number (1/m): 3.9263333333333335
+Wavelength (m): 1.6002679277985192
+ak value at 30cm: 0.05418339999999999
+kH value at 30cm: 1.1779
+--------------------------------
+
+Scaling from 20cm to 30cm - f11_a03
+
+Wave parameters at 20cm:
+Frequency (Hz): 1.1
+Angular frequency (rad/s): 6.911503837897546
+Amplitude at P0 (m): 0.0139
+Wave number (1/m): 5.8895
+Wavelength (m): 1.0668
+ak value at 20cm: 0.08186405
+kH value at 20cm: 1.1779
+
+Scaled wave parameters at 30cm:
+Frequency (Hz): 0.8981462390204987
+Angular frequency (rad/s): 5.6432192527122025
+Amplitude at P0 (m): 0.020849999999999994
+Wave number (1/m): 3.9263333333333335
+Wavelength (m): 1.6002679277985192
+ak value at 30cm: 0.08186404999999998
+kH value at 30cm: 1.1779
+--------------------------------
+
+Scaling from 20cm to 30cm - f12_a01
+
+Wave parameters at 20cm:
+Frequency (Hz): 1.2
+Angular frequency (rad/s): 7.5398223686155035
+Amplitude at P0 (m): 0.0050
+Wave number (1/m): 6.6621
+Wavelength (m): 0.9431
+ak value at 20cm: 0.0333105
+kH value at 20cm: 1.33242
+
+Scaled wave parameters at 30cm:
+Frequency (Hz): 0.9797958971132713
+Angular frequency (rad/s): 6.156239184776948
+Amplitude at P0 (m): 0.0075
+Wave number (1/m): 4.4414
+Wavelength (m): 1.414685753856799
+ak value at 30cm: 0.0333105
+kH value at 30cm: 1.33242
+--------------------------------
+
+Scaling from 20cm to 30cm - f12_a02
+
+Wave parameters at 20cm:
+Frequency (Hz): 1.2
+Angular frequency (rad/s): 7.5398223686155035
+Amplitude at P0 (m): 0.0100
+Wave number (1/m): 6.6621
+Wavelength (m): 0.9431
+ak value at 20cm: 0.066621
+kH value at 20cm: 1.33242
+
+Scaled wave parameters at 30cm:
+Frequency (Hz): 0.9797958971132713
+Angular frequency (rad/s): 6.156239184776948
+Amplitude at P0 (m): 0.015
+Wave number (1/m): 4.4414
+Wavelength (m): 1.414685753856799
+ak value at 30cm: 0.066621
+kH value at 30cm: 1.33242
+--------------------------------
+
+Scaling from 20cm to 30cm - f12_a03
+
+Wave parameters at 20cm:
+Frequency (Hz): 1.2
+Angular frequency (rad/s): 7.5398223686155035
+Amplitude at P0 (m): 0.0151
+Wave number (1/m): 6.6621
+Wavelength (m): 0.9431
+ak value at 20cm: 0.10059770999999999
+kH value at 20cm: 1.33242
+
+Scaled wave parameters at 30cm:
+Frequency (Hz): 0.9797958971132713
+Angular frequency (rad/s): 6.156239184776948
+Amplitude at P0 (m): 0.02265
+Wave number (1/m): 4.4414
+Wavelength (m): 1.414685753856799
+ak value at 30cm: 0.10059770999999999
+kH value at 30cm: 1.33242
+--------------------------------
+
+Scaling from 20cm to 30cm - f13_a01
+
+Wave parameters at 20cm:
+Frequency (Hz): 1.3
+Angular frequency (rad/s): 8.168140899333462
+Amplitude at P0 (m): 0.0055
+Wave number (1/m): 7.5106
+Wavelength (m): 0.8366
+ak value at 20cm: 0.0413083
+kH value at 20cm: 1.5021200000000001
+
+Scaled wave parameters at 30cm:
+Frequency (Hz): 1.0614455552060438
+Angular frequency (rad/s): 6.669259116841693
+Amplitude at P0 (m): 0.008249999999999999
+Wave number (1/m): 5.007066666666668
+Wavelength (m): 1.2548635209929138
+ak value at 30cm: 0.0413083
+kH value at 30cm: 1.5021200000000003
+--------------------------------
+
+Scaling from 20cm to 30cm - f13_a02
+
+Wave parameters at 20cm:
+Frequency (Hz): 1.3
+Angular frequency (rad/s): 8.168140899333462
+Amplitude at P0 (m): 0.0109
+Wave number (1/m): 7.5106
+Wavelength (m): 0.8366
+ak value at 20cm: 0.08186554
+kH value at 20cm: 1.5021200000000001
+
+Scaled wave parameters at 30cm:
+Frequency (Hz): 1.0614455552060438
+Angular frequency (rad/s): 6.669259116841693
+Amplitude at P0 (m): 0.01635
+Wave number (1/m): 5.007066666666668
+Wavelength (m): 1.2548635209929138
+ak value at 30cm: 0.08186554000000001
+kH value at 30cm: 1.5021200000000003
+--------------------------------
+
+Scaling from 20cm to 30cm - f13_a03
+
+Wave parameters at 20cm:
+Frequency (Hz): 1.3
+Angular frequency (rad/s): 8.168140899333462
+Amplitude at P0 (m): 0.0166
+Wave number (1/m): 7.5106
+Wavelength (m): 0.8366
+ak value at 20cm: 0.12467596
+kH value at 20cm: 1.5021200000000001
+
+Scaled wave parameters at 30cm:
+Frequency (Hz): 1.0614455552060438
+Angular frequency (rad/s): 6.669259116841693
+Amplitude at P0 (m): 0.0249
+Wave number (1/m): 5.007066666666668
+Wavelength (m): 1.2548635209929138
+ak value at 30cm: 0.12467596000000002
+kH value at 30cm: 1.5021200000000003
+--------------------------------
+
+Scaling from 20cm to 30cm - f14_a01
+
+Wave parameters at 20cm:
+Frequency (Hz): 1.4
+Angular frequency (rad/s): 8.79645943005142
+Amplitude at P0 (m): 0.0060
+Wave number (1/m): 8.4449
+Wavelength (m): 0.7440
+ak value at 20cm: 0.0506694
+kH value at 20cm: 1.6889800000000001
+
+Scaled wave parameters at 30cm:
+Frequency (Hz): 1.1430952132988164
+Angular frequency (rad/s): 7.182279048906438
+Amplitude at P0 (m): 0.009
+Wave number (1/m): 5.629933333333334
+Wavelength (m): 1.1160319199480608
+ak value at 30cm: 0.050669399999999996
+kH value at 30cm: 1.6889800000000001
+--------------------------------
+
+Scaling from 20cm to 30cm - f14_a02
+
+Wave parameters at 20cm:
+Frequency (Hz): 1.4
+Angular frequency (rad/s): 8.79645943005142
+Amplitude at P0 (m): 0.0119
+Wave number (1/m): 8.4449
+Wavelength (m): 0.7440
+ak value at 20cm: 0.10049431000000002
+kH value at 20cm: 1.6889800000000001
+
+Scaled wave parameters at 30cm:
+Frequency (Hz): 1.1430952132988164
+Angular frequency (rad/s): 7.182279048906438
+Amplitude at P0 (m): 0.01785
+Wave number (1/m): 5.629933333333334
+Wavelength (m): 1.1160319199480608
+ak value at 30cm: 0.10049431000000002
+kH value at 30cm: 1.6889800000000001
+--------------------------------
+
+Scaling from 20cm to 30cm - f14_a03
+
+Wave parameters at 20cm:
+Frequency (Hz): 1.4
+Angular frequency (rad/s): 8.79645943005142
+Amplitude at P0 (m): 0.0178
+Wave number (1/m): 8.4449
+Wavelength (m): 0.7440
+ak value at 20cm: 0.15031922
+kH value at 20cm: 1.6889800000000001
+
+Scaled wave parameters at 30cm:
+Frequency (Hz): 1.1430952132988164
+Angular frequency (rad/s): 7.182279048906438
+Amplitude at P0 (m): 0.026699999999999998
+Wave number (1/m): 5.629933333333334
+Wavelength (m): 1.1160319199480608
+ak value at 30cm: 0.15031922
+kH value at 30cm: 1.6889800000000001
+--------------------------------
+
+Scaling from 20cm to 30cm - f15_a01
+
+Wave parameters at 20cm:
+Frequency (Hz): 1.5
+Angular frequency (rad/s): 9.42477796076938
+Amplitude at P0 (m): 0.0065
+Wave number (1/m): 9.4736
+Wavelength (m): 0.6632
+ak value at 20cm: 0.06157839999999999
+kH value at 20cm: 1.89472
+
+Scaled wave parameters at 30cm:
+Frequency (Hz): 1.2247448713915892
+Angular frequency (rad/s): 7.6952989809711845
+Amplitude at P0 (m): 0.009749999999999998
+Wave number (1/m): 6.315733333333333
+Wavelength (m): 0.9948465167169165
+ak value at 30cm: 0.061578399999999985
+kH value at 30cm: 1.89472
+--------------------------------
+
+Scaling from 20cm to 30cm - f15_a02
+
+Wave parameters at 20cm:
+Frequency (Hz): 1.5
+Angular frequency (rad/s): 9.42477796076938
+Amplitude at P0 (m): 0.0127
+Wave number (1/m): 9.4736
+Wavelength (m): 0.6632
+ak value at 20cm: 0.12031471999999999
+kH value at 20cm: 1.89472
+
+Scaled wave parameters at 30cm:
+Frequency (Hz): 1.2247448713915892
+Angular frequency (rad/s): 7.6952989809711845
+Amplitude at P0 (m): 0.019049999999999997
+Wave number (1/m): 6.315733333333333
+Wavelength (m): 0.9948465167169165
+ak value at 30cm: 0.12031471999999999
+kH value at 30cm: 1.89472
+--------------------------------
+
+Scaling from 20cm to 30cm - f15_a03
+
+Wave parameters at 20cm:
+Frequency (Hz): 1.5
+Angular frequency (rad/s): 9.42477796076938
+Amplitude at P0 (m): 0.0199
+Wave number (1/m): 9.4736
+Wavelength (m): 0.6632
+ak value at 20cm: 0.18852464
+kH value at 20cm: 1.89472
+
+Scaled wave parameters at 30cm:
+Frequency (Hz): 1.2247448713915892
+Angular frequency (rad/s): 7.6952989809711845
+Amplitude at P0 (m): 0.02985
+Wave number (1/m): 6.315733333333333
+Wavelength (m): 0.9948465167169165
+ak value at 30cm: 0.18852464
+kH value at 30cm: 1.89472
+--------------------------------
+
