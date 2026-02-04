@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+from scipy import stats
 
 def get_amp_n_err_lists(df):
     """
@@ -20,7 +21,7 @@ def get_amp_n_err_lists(df):
     return amp_list, err_list
 
 
-def get_obs_damping_coeff(amp_list, probe_pos):
+def get_obs_damping_coeff(amp_list, probe_pos, ci=0.05):
     """
     Find the observed spatial damping coefficient by fitting
     ln(A) = ln(A0) - alpha * x.
@@ -36,11 +37,14 @@ def get_obs_damping_coeff(amp_list, probe_pos):
     (m, b), cov = np.polyfit(x, y, 1, cov=True)
 
     alpha = -m
-    # standard error of slope m is sqrt(cov[0,0])
-    se_m = np.sqrt(cov[0, 0])
-    se_alpha = se_m
+    # standard error of slope is sqrt(cov[0,0])
+    se_alpha = np.sqrt(cov[0, 0])
 
-    return alpha, se_alpha
+    n = len(x)
+    dof = n - 2  # degrees of freedom
+    t_val = stats.t.ppf(1 - ci/2, dof)
+
+    return alpha, se_alpha, t_val
 
 # ----------------------------------------------------------
 # Analytical functions
