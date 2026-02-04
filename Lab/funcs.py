@@ -11,7 +11,7 @@ def dispersion_relation_derivative_k(k, H):
     sech_kH = 1 / np.cosh(k*H)
     return g*tanh_kH + g*k*H*sech_kH**2
 
-def solve_disp_for_H(freq, lamb):
+def eff_water_depth(freq, lamb):
     g = 9.81
     k = (2*np.pi)/lamb
     omega = 2*np.pi*freq
