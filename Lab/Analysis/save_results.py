@@ -52,14 +52,6 @@ def __main__():
     amps_r2, errs_r2 = get_amp_n_err_lists(r2)
     amps_r3, errs_r3 = get_amp_n_err_lists(r3)
 
-    # Convert to numpy arrays for easier handling
-    amps_r1 = np.array(amps_r1)
-    errs_r1 = np.array(errs_r1)
-    amps_r2 = np.array(amps_r2)
-    errs_r2 = np.array(errs_r2)
-    amps_r3 = np.array(amps_r3)
-    errs_r3 = np.array(errs_r3)
-
     print("Amplitudes and errors extracted from processed files.")
 
     # Get observed spatial damping coefficients for each run
@@ -69,25 +61,52 @@ def __main__():
     alpha_r3, se_alpha_r3, t_val_r3 = get_obs_damping_coeff(amps_r3, x_probe_pos)
     print("Observed damping coefficients calculated.")
 
+    # Find change in amplitude from first to last probe for each run
+    P3_minus_P0_r1 = amps_r1[3] - amps_r1[0]
+    P3_minus_P0_r2 = amps_r2[3] - amps_r2[0]
+    P3_minus_P0_r3 = amps_r3[3] - amps_r3[0]
+
     results = []
+
     results.append({'Run': 'R1',
                     'Alpha_obs': alpha_r1,
                     'SE_Alpha_obs': se_alpha_r1,
                     'T_val': t_val_r1,
-                    'Amp_obs': amps_r1,
-                    'Amp_errors': errs_r1})
+                    'Amp_obs_P0': amps_r1[0],
+                    'Amp_obs_P1': amps_r1[1],
+                    'Amp_obs_P2': amps_r1[2],
+                    'Amp_obs_P3': amps_r1[3],
+                    'Amp_errors_P0': errs_r1[0],
+                    'Amp_errors_P1': errs_r1[1],
+                    'Amp_errors_P2': errs_r1[2],
+                    'Amp_errors_P3': errs_r1[3],
+                    'P3_minus_P0': P3_minus_P0_r1})
     results.append({'Run': 'R2',
                     'Alpha_obs': alpha_r2,
                     'SE_Alpha_obs': se_alpha_r2,
                     'T_val': t_val_r2,
-                    'Amp_obs': amps_r2,
-                    'Amp_errors': errs_r2})
+                    'Amp_obs_P0': amps_r2[0],
+                    'Amp_obs_P1': amps_r2[1],
+                    'Amp_obs_P2': amps_r2[2],
+                    'Amp_obs_P3': amps_r2[3],
+                    'Amp_errors_P0': errs_r2[0],
+                    'Amp_errors_P1': errs_r2[1],
+                    'Amp_errors_P2': errs_r2[2],
+                    'Amp_errors_P3': errs_r2[3],
+                    'P3_minus_P0': P3_minus_P0_r2})
     results.append({'Run': 'R3',
                     'Alpha_obs': alpha_r3,
-                    'T_val': t_val_r3,
                     'SE_Alpha_obs': se_alpha_r3,
-                    'Amp_obs': amps_r3,
-                    'Amp_errors': errs_r3})
+                    'T_val': t_val_r3,
+                    'Amp_obs_P0': amps_r3[0],
+                    'Amp_obs_P1': amps_r3[1],
+                    'Amp_obs_P2': amps_r3[2],
+                    'Amp_obs_P3': amps_r3[3],
+                    'Amp_errors_P0': errs_r3[0],
+                    'Amp_errors_P1': errs_r3[1],
+                    'Amp_errors_P2': errs_r3[2],   
+                    'Amp_errors_P3': errs_r3[3],
+                    'P3_minus_P0': P3_minus_P0_r3})
     
     # Save the results to csv file
     df = pd.DataFrame(results)
