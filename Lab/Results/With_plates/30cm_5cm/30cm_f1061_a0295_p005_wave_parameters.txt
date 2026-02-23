@@ -1,0 +1,43 @@
+Summary of wave parameters for 30cm_f1061_a0295_p005:
+----------------------------------------------------------
+Water depth: 0.3 m, Frequency: 1.061 Hz, Amplitude setting: 0.295 V
+
+Wavelength: 1.2557 m
+Wavenumber: 5.0038 1/m
+Phase speed: 1.3323 m/s
+Group speed: 0.8653 m/s
+
+Dimensionless parameters:
+ak = 0.0821, kH = 1.5011
+
+Standard Deviation for each probe:
+P0: 0.0116 m
+P1: 0.0115 m
+P2: 0.0112 m
+P3: 0.0110 m
+
+Wave Amplitude for each probe:
+P0: 0.0164 m
+P1: 0.0162 m
+P2: 0.0159 m
+P3: 0.0155 m
+
+Amplitude Difference between P0 and P3: 0.00088 m
+Spatial Amplitude Decay Rate: 0.00021 m/m
+
+Number of data points used for analysis after cutting out build-up time and reflections:
+Run 1:
+P_0: 8010 data points
+P_1: 5655 data points
+P_2: 4003 data points
+P_3: 2358 data points
+Run 2:
+P_0: 8009 data points
+P_1: 5654 data points
+P_2: 4005 data points
+P_3: 2358 data points
+Run 3:
+P_0: 8008 data points
+P_1: 5653 data points
+P_2: 4004 data points
+P_3: 2357 data points
