@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 from scipy import stats
+from scipy.signal import find_peaks
 
 def get_amp_n_err_lists(df):
     """
@@ -161,6 +162,46 @@ def robin_parameter(H, a, k):
 
     return R
 
+def get_amplitudes_from_run(y, use_minima=True, distance=10):
+    """
+    y: time series from one probe
+    use_minima: if True, include troughs as well as crests
+    distance: minimum distance between peaks (in samples)
+    Returns: 1D numpy array of amplitudes (peak values)
+    """
+    y = np.asarray(y)
 
+    # Maxima
+    peaks_max, _ = find_peaks(y, distance=distance)
+    amps_max = y[peaks_max]
 
+    if not use_minima:
+        return amps_max
 
+    # Minima
+    peaks_min, _ = find_peaks(-y, distance=distance)
+    amps_min = y[peaks_min]
+
+    return np.abs(np.concatenate([amps_max, amps_min]))
+
+def amplitude_distributions(runs_amplitudes, n_bins=50):
+    
+    # Amplitudes from the three runs, concatenated for binning
+    all_amps = np.concatenate([np.asarray(a) for a in runs_amplitudes])
+
+    bins = np.linspace(all_amps.min(), all_amps.max(), n_bins + 1)
+
+    hists = []
+
+    for amps in runs_amplitudes:
+
+        amps = np.asarray(amps)
+        hist, _ = np.histogram(amps, bins=bins, density=True)
+        hists.append(hist)
+
+    hists = np.vstack(hists)                    # shape: (n_runs, n_bins)
+    mean_hist = hists.mean(axis=0)
+    std_hist = hists.std(axis=0)
+    bin_centers = 0.5 * (bins[:-1] + bins[1:])
+    
+    return bin_centers, hists, mean_hist, std_hist, bins
