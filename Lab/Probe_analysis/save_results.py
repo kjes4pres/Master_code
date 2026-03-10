@@ -9,7 +9,7 @@ sys.path.append('/Users/kjesta/Desktop/Master prosjekt/Processed_files/')
 
 from funcs import *
 from processing_funcs import *
-from analysis_funcs import *
+from Master_code.Lab.analysis_funcs import *
 
 """
 This script collects the amplitude results from different experiments (3 runs per experiment) and saves them into text files for easier access and comparison.
