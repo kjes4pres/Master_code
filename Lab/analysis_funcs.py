@@ -56,7 +56,7 @@ Functions for calculating theoretical values,
 for comparison with experimental results.
 """
 
-def vertical_velocity(eta, D, H, f, a, k, h):
+def vertical_velocity(A, D, H, f, a, k, h, x, t):
     """
     Calculate the average vertical velocity
     at the top of the platess.
@@ -65,13 +65,15 @@ def vertical_velocity(eta, D, H, f, a, k, h):
     of Equation 56 in Weber (2025).
 
     Parameters:
-        eta : Wave amplitude (m)
+        A : Wave amplitude (m)
         D : total water depth (m)
         H : depth of plate top (m)
         f : wave frequency (Hz)
         a : spatial damping coefficient (1/m)
         k : wavenumber (1/m)
         h : plate spacing (m)
+        x: horizontal position (m)
+        t: time (s)
 
     Returns:
         w_bar : average vertical velocity (m/s)
@@ -84,10 +86,12 @@ def vertical_velocity(eta, D, H, f, a, k, h):
     # Angular frequency
     omega = 2 * np.pi * f
 
-    nominator = g*eta*(D - H) * (2*omega*a*k - (12*nu*(k**2 + a**2)/h**2))
-    denominator = (12*nu/h**2)**2 + omega**2
+    # Phase
+    theta = k*x - omega*t
 
-    w_bar = nominator / denominator
+    B = 12*nu*(k**2*np.cos(theta) - 2*a*k*np.sin(theta)) - h**2*omega*(k**2*np.sin(theta) + 2*a*k*np.cos(theta))
+    
+    w_bar = -g*h**2*(D-H)*A*np.exp(-a*x)*B/(144*nu**2 + h**4*omega**2)
 
     return w_bar
 
@@ -151,7 +155,7 @@ def spatial_damping_coefficient(k, D, H, h = 0.01):
 
     alpha = alpha_weber / (1 + Q)
     
-    return alpha
+    return alpha, alpha_weber
 
 
 def robin_parameter(H, a, k):
