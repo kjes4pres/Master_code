@@ -59,7 +59,7 @@ for comparison with experimental results.
 def vertical_velocity(A, D, H, f, a, k, h, x, t):
     """
     Calculate the average vertical velocity
-    at the top of the platess.
+    at the top of the plates (z=-H).
     
     Corresponds to the real part of the modified version 
     of Equation 56 in Weber (2025).
@@ -87,7 +87,7 @@ def vertical_velocity(A, D, H, f, a, k, h, x, t):
     omega = 2 * np.pi * f
 
     # Phase
-    theta = k*x - omega*t
+    theta = omega*t + k*x
 
     B = 12*nu*(k**2*np.cos(theta) - 2*a*k*np.sin(theta)) - h**2*omega*(k**2*np.sin(theta) + 2*a*k*np.cos(theta))
     
