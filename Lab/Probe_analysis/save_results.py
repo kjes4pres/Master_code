@@ -2,14 +2,14 @@ import pandas as pd
 import numpy as np
 import os
 import sys
+import matplotlib.pyplot as plt
 
-sys.path.append('/Users/kjesta/Desktop/LABDATA/Kjersti_280126/')
-sys.path.append('/Users/kjesta/Desktop/Master prosjekt/Master_code/Lab/')
-sys.path.append('/Users/kjesta/Desktop/Master prosjekt/Processed_files/')
+sys.path.append('/Users/kjesta/Desktop/LABDATA/')
+sys.path.append('/Users/kjesta/Desktop/Master prosjekt/Master_code/')
 
-from funcs import *
-from processing_funcs import *
-from Master_code.Lab.analysis_funcs import *
+from Lab.funcs import *
+from Lab.processing_funcs import *
+from Lab.analysis_funcs import *
 
 """
 This script collects the amplitude results from different experiments (3 runs per experiment) and saves them into text files for easier access and comparison.
@@ -47,6 +47,17 @@ def __main__():
         else:
             print(f"Column {col} mean check passed :)")
 
+    # The measurements are the distance from the water surface to the probe
+    # In post-processing, the mean of each column was set to zero to have
+    # have the surface wave oscillate around zero.
+    # Therefore, negative values in the columns correspond to the positive amplitude of the wave.
+
+    # Fixing the sign of the amplitudes to be positive
+    r1[['P_0', 'P_1', 'P_2', 'P_3']] = (-1) * r1[['P_0', 'P_1', 'P_2', 'P_3']]
+    r2[['P_0', 'P_1', 'P_2', 'P_3']] = (-1) * r2[['P_0', 'P_1', 'P_2', 'P_3']]
+    r3[['P_0', 'P_1', 'P_2', 'P_3']] = (-1) * r3[['P_0', 'P_1', 'P_2', 'P_3']]
+
+
     # Get the amplitude and error lists for each run
     amps_r1, errs_r1 = get_amp_n_err_lists(r1)
     amps_r2, errs_r2 = get_amp_n_err_lists(r2)
@@ -56,6 +67,7 @@ def __main__():
 
     # Get observed spatial damping coefficients for each run
     x_probe_pos = np.array([4.86, 6.69, 7.87, 9.15])  # positions of probes in meters from wave maker
+
     alpha_r1, se_alpha_r1, t_val_r1 = get_obs_damping_coeff(amps_r1, x_probe_pos)
     alpha_r2, se_alpha_r2, t_val_r2 = get_obs_damping_coeff(amps_r2, x_probe_pos)
     alpha_r3, se_alpha_r3, t_val_r3 = get_obs_damping_coeff(amps_r3, x_probe_pos)
