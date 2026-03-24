@@ -3,33 +3,44 @@ import pandas as pd
 from scipy import stats
 from scipy.signal import find_peaks
 
-def get_amp_n_err_lists(df):
+def find_positive_peaks(freq, df, col):
     """
-    Find the observed amplitude and standard error at each probe.
+    Find positive peaks in a column of a DataFrame based on frequency and sample rate.
     """
-    std_list = np.array([df['P_0'].std(), df['P_1'].std(), df['P_2'].std(), df['P_3'].std()])
-    amp_list = std_list * np.sqrt(2)
+    # Expected distance between peaks in samples, based on the frequency and sample rate of 250 Hz
+    distance = (1/freq) * 250 * 0.8
 
-    # Number of data points per probe
-    n_0 = df["P_0"].count()
-    n_1 = df["P_1"].count()
-    n_2 = df["P_2"].count()
-    n_3 = df["P_3"].count()
-    len_list = np.array([n_0, n_1, n_2, n_3])
-    
-    err_list = std_list / np.sqrt(len_list)
+    # Allowing amplitudes to be 10% lower than expected from linear theory,
+    # and 20% higher, to account for experimental variability and noise.
+    lower_bound = 0.9*np.sqrt(2)*np.nanstd(df[col])
+    upper_bound = 1.2*np.sqrt(2)*np.nanstd(df[col])
 
-    return amp_list, err_list
+    peak_idx = find_peaks(df[col], height=(lower_bound, upper_bound), distance=distance)[0]
 
+    peaks = df[col].values[peak_idx]
+    positive_peaks = peaks[peaks > 0]
 
-def get_obs_damping_coeff(amp_list, probe_pos, ci=0.05):
+    return positive_peaks
+
+def mean_amp_and_err(peaks):
+    """
+    Calculate the mean amplitude and error from a list of peak values.
+    """
+    amps = np.array(peaks)
+    mean_amp = np.mean(amps)
+    std_amp = np.std(amps, ddof=1)  # sample standard deviation
+    n = len(amps)
+    err_amp = std_amp / np.sqrt(n)
+    return mean_amp, err_amp
+
+def get_obs_damping_coeff(amps, probe_pos):
     """
     Find the observed spatial damping coefficient by fitting
     ln(A) = ln(A0) - alpha * x.
 
     Returns (alpha, se_alpha).
     """
-    amp = np.asarray(amp_list)
+    amp = np.asarray(amps)
     x = np.asarray(probe_pos)
 
     y = np.log(amp)
@@ -41,11 +52,7 @@ def get_obs_damping_coeff(amp_list, probe_pos, ci=0.05):
     # standard error of slope is sqrt(cov[0,0])
     se_alpha = np.sqrt(cov[0, 0])
 
-    n = len(x)
-    dof = n - 2  # degrees of freedom
-    t_val = stats.t.ppf(1 - ci/2, dof)
-
-    return alpha, se_alpha, t_val
+    return alpha, se_alpha
 
 # ----------------------------------------------------------
 # Analytical functions
@@ -174,47 +181,3 @@ def robin_parameter(H, a, k):
     R = (2*H*a)/(k)
 
     return R
-
-def get_amplitudes_from_run(y, use_minima=True, distance=10):
-    """
-    y: time series from one probe
-    use_minima: if True, include troughs as well as crests
-    distance: minimum distance between peaks (in samples)
-    Returns: 1D numpy array of amplitudes (peak values)
-    """
-    y = np.asarray(y)
-
-    # Maxima
-    peaks_max, _ = find_peaks(y, distance=distance)
-    amps_max = y[peaks_max]
-
-    if not use_minima:
-        return amps_max
-
-    # Minima
-    peaks_min, _ = find_peaks(-y, distance=distance)
-    amps_min = y[peaks_min]
-
-    return np.abs(np.concatenate([amps_max, amps_min]))
-
-def amplitude_distributions(runs_amplitudes, n_bins=50):
-    
-    # Amplitudes from the three runs, concatenated for binning
-    all_amps = np.concatenate([np.asarray(a) for a in runs_amplitudes])
-
-    bins = np.linspace(all_amps.min(), all_amps.max(), n_bins + 1)
-
-    hists = []
-
-    for amps in runs_amplitudes:
-
-        amps = np.asarray(amps)
-        hist, _ = np.histogram(amps, bins=bins, density=True)
-        hists.append(hist)
-
-    hists = np.vstack(hists)                    # shape: (n_runs, n_bins)
-    mean_hist = hists.mean(axis=0)
-    std_hist = hists.std(axis=0)
-    bin_centers = 0.5 * (bins[:-1] + bins[1:])
-    
-    return bin_centers, hists, mean_hist, std_hist, bins
