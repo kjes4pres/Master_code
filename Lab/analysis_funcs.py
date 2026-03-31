@@ -94,7 +94,7 @@ def vertical_velocity(A, D, H, f, a, k, h, x, t):
     omega = 2 * np.pi * f
 
     # Phase
-    theta = omega*t + k*x -0.5
+    theta = omega*t + k*x - 1.5
 
     B = 12*nu*(k**2*np.cos(theta) - 2*a*k*np.sin(theta)) - h**2*omega*(k**2*np.sin(theta) + 2*a*k*np.cos(theta))
     
