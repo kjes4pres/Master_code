@@ -27,8 +27,8 @@ def mean_amp_and_err(peaks):
     Calculate the mean amplitude and error from a list of peak values.
     """
     amps = np.array(peaks)
-    mean_amp = np.mean(amps)
-    std_amp = np.std(amps, ddof=1)  # sample standard deviation
+    mean_amp = np.nanmean(amps)
+    std_amp = np.nanstd(amps, ddof=1)  # sample standard deviation
     n = len(amps)
     err_amp = std_amp / np.sqrt(n)
     return mean_amp, err_amp
