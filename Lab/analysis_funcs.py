@@ -176,7 +176,7 @@ def robin_parameter(H, a, k):
         k : wavenumber (1/m)
 
     Returns:
-        R : Robin parameter (???)
+        R : Robin parameter (m)
     """
     R = (2*H*a)/(k)
 
