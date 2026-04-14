@@ -65,11 +65,11 @@ for comparison with experimental results.
 
 def vertical_velocity(A, D, H, f, a, k, h, x, t):
     """
-    Calculate the average vertical velocity
+    Calculate the real vertical velocity
     at the top of the plates (z=-H).
     
     Corresponds to the real part of the modified version 
-    of Equation 56 in Weber (2025).
+    of Equation 35 in Weber (2025).
 
     Parameters:
         A : Wave amplitude (m)
@@ -83,7 +83,7 @@ def vertical_velocity(A, D, H, f, a, k, h, x, t):
         t: time (s)
 
     Returns:
-        w_bar : average vertical velocity (m/s)
+        w : average vertical velocity (m/s)
     """
 
     # Constants
@@ -94,13 +94,23 @@ def vertical_velocity(A, D, H, f, a, k, h, x, t):
     omega = 2 * np.pi * f
 
     # Phase
-    theta = omega*t + k*x - 1.5
+    theta = k*x - omega*t - 2.5
 
-    B = 12*nu*(k**2*np.cos(theta) - 2*a*k*np.sin(theta)) - h**2*omega*(k**2*np.sin(theta) + 2*a*k*np.cos(theta))
-    
-    w_bar = -g*h**2*(D-H)*A*np.exp(-a*x)*B/(144*nu**2 + h**4*omega**2)
+    term1 = 2 * (g*H)**0.5 * A * np.exp(-a*x) * a
+    term2 = (((omega*h**2*D)/(12*H*nu))*np.sin(theta) - np.cos(theta))
+    w = term1 * term2
+    return w
 
-    return w_bar
+# Airy theory velocities
+def w_airy(A, f, k, D, H, x, t):
+    # At z = -H
+    omega = 2*np.pi*f
+    return (A*omega) * ((np.sinh(k*(-H + D))/(np.sinh(k*D))))*np.sin(k*x - omega*t - 2.5)
+
+def u_airy(A, f, k, D, H, x, t):
+    # At z = -H
+    omega = 2*np.pi*f
+    return (A*omega) * ((np.cosh(k*(-H + D))/(np.sinh(k*D))))*np.cos(k*x - omega*t - 2.5)
 
 def full_w_vel(w, dw, R):
     '''
@@ -135,6 +145,12 @@ def theoretical_omega(k, H, D, a, h):
 
     return omega
 
+def wave_number_in_theory(f, H):
+    # Approximation of 58* (modifed eq 58 in Weber (2025)) 
+    g = 9.81
+    omega = 2*np.pi*f
+    return omega/np.sqrt(g*H)
+
 
 def spatial_damping_coefficient(k, D, H, h = 0.01):
     """
@@ -165,7 +181,7 @@ def spatial_damping_coefficient(k, D, H, h = 0.01):
     return alpha, alpha_weber
 
 
-def robin_parameter(H, a, k):
+def robin_parameter_eq_39(H, a, k):
     """
     Calculate the Robin boundary condition parameter R.
     Corresponds to the modified version of Equation 60 in Weber (2025).
@@ -181,3 +197,13 @@ def robin_parameter(H, a, k):
     R = (2*H*a)/(k)
 
     return R
+
+def robin_parameter_eq_28(f, a, k, H):
+    omega = 2*np.pi*f
+    g = 9.81
+    
+    P = omega/(2*k) * (1 + g*(k**2)*H/(omega**2) - (omega**2)*H/g)
+    frac1 = (2*omega*a*P) / (g*(k**2))
+    frac2 = 1/(1 - np.tanh(k*H)**2)
+
+    return frac1 * frac2
