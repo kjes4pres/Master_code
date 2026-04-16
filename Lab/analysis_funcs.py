@@ -101,6 +101,42 @@ def vertical_velocity(A, D, H, f, a, k, h, x, t):
     w = term1 * term2
     return w
 
+def vertical_velocity_2(A, D, H, f, a, k, h, x, t):
+    """
+    Calculate the real vertical velocity
+    at the top of the plates (z=-H).
+
+    Parameters:
+        A : Wave amplitude (m)
+        D : total water depth (m)
+        H : depth of plate top (m)
+        f : wave frequency (Hz)
+        a : spatial damping coefficient (1/m)
+        k : wavenumber (1/m)
+        h : plate spacing (m)
+        x: horizontal position (m)
+        t: time (s)
+
+    Returns:
+        w : average vertical velocity (m/s)
+    """
+
+    # Constants
+    g = 9.81  # gravitational acceleration (m/s^2)
+    nu = 1e-6  # kinematic viscosity of water (m^2/s)
+
+    # Angular frequency
+    omega = 2 * np.pi * f
+
+    # Phase
+    theta = k*x - omega*t - 2.5
+
+    nominator = g*(D - H)*A*np.exp(-a*x)
+    denominator = omega**2 + (144*nu**2)/(h**4)
+    B = ((12*k**2*nu*np.cos(theta))/(h**2)) - omega*k**2*np.sin(theta) - 2*omega*a*k*np.cos(theta) - ((24*a*k*nu*np.sin(theta))/(h**2))
+
+    return nominator*B/denominator
+
 # Airy theory velocities
 def w_airy(A, f, k, D, H, x, t):
     # At z = -H
