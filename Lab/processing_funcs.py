@@ -1,8 +1,8 @@
 '''
 For a given experiment with three runs, I pre-process the data.
 
-1) Clean each run by removing gauge noise and converting timestamps.
-    That is, for each pressure probe column, I subtract the mean of the first 500 rows (gauge noise).
+1) Clean each run by removing probe noise and converting timestamps.
+    That is, for each pressure probe column, I subtract the mean of the first 500 rows (probe noise).
     Then, I convert the timestamps to seconds starting from zero.
 2) Detrend each filtered run (set mean to zero).
 
@@ -37,10 +37,12 @@ def clean(df):
 
 def detrend(df):
     '''
-    Detrends the data by removing linear trend from each column.
+    Detrends the data by removing mean from each column.
     Sets the mean water level to zero.
     '''
     df_detrended = df.copy()
+    # Ignore time stamp column (first column) 
+    # and sound speed (last column)
     for col in df_detrended.columns[1:5]:
         df_detrended[col] = df_detrended[col] - np.mean(df_detrended[col])
     return df_detrended
@@ -52,7 +54,7 @@ def correct_spikes(df, threshold, max_passes=20):
     - max_passes: maximum iterations to run; stops early if no new spikes found.
 
     Original code by Anne Raustoel (2012), modified by Karen Samseth (2022), 
-    and converted from matlab to Python here.
+    and converted from Matlab to Python here.
     """
     df_corrected = df.copy()
 
