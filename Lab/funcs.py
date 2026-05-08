@@ -11,15 +11,6 @@ def dispersion_relation_derivative_k(k, H):
     sech_kH = 1 / np.cosh(k*H)
     return g*tanh_kH + g*k*H*sech_kH**2
 
-def eff_water_depth(freq, lamb):
-    g = 9.81
-    k = (2*np.pi)/lamb
-    omega = 2*np.pi*freq
-    R = (omega**2)/(g*k)
-    H_eff = np.arctanh(R)/k
-
-    return H_eff
-
 
 def estimate_wavenumber(freq, depth, g=9.81, tol=1e-10, max_iter=100):
     """
