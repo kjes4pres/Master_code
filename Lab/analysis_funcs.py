@@ -62,7 +62,6 @@ def get_obs_damping_coeff(amps, probe_pos):
 Functions for calculating theoretical values,
 for comparison with experimental results.
 """
-
 def vertical_velocity(A, D, H, f, a, k, h, x, t):
     """
     Calculate the real vertical velocity
@@ -133,7 +132,7 @@ def vertical_velocity_2(A, D, H, f, a, k, h, x, t):
 
     nominator = g*(D - H)*A*np.exp(-a*x)
     denominator = omega**2 + (144*nu**2)/(h**4)
-    B = ((12*k**2*nu*np.cos(theta))/(h**2)) - omega*k**2*np.sin(theta) - 2*omega*a*k*np.cos(theta) - ((24*a*k*nu*np.sin(theta))/(h**2))
+    B = ((-12*k**2*nu*np.cos(theta))/(h**2)) + omega*k**2*np.sin(theta) + 2*omega*a*k*np.cos(theta) + ((24*a*k*nu*np.sin(theta))/(h**2))
 
     return nominator*B/denominator
 
