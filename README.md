@@ -2,6 +2,8 @@
 **Author: Kjersti Stangeland**
 Contact: kjesta@uio.no
 
+Data is available at: [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20286151.svg)](https://doi.org/10.5281/zenodo.20286151)
+
 Here lies the scripts for processing lab data, both acoustic probe data and PIV data, for my thesis.
 Both processing scripts and analyis is provided.
 
